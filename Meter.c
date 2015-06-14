@@ -381,7 +381,7 @@ static void GraphMeterMode_draw(Meter* this, int x, int y, int w) {
  
          attrset(CRT_colors[colorIdx]);
          mvaddstr(y+line, x+k, GraphMeterMode_dots[line1][line2]);
-         colorIdx = GRAPH_2;
+         colorIdx++;
          level -= 4;
       }
    }
