@@ -331,6 +331,7 @@ static void GraphMeterMode_draw(Meter* this, int x, int y, int w) {
    if (!this->drawData) this->drawData = calloc(1, sizeof(GraphData));
     GraphData* data = (GraphData*) this->drawData;
    const int nValues = METER_BUFFER_LEN;
+printf("buf=%d ", nValues);
 
    if (CRT_utf8) {
       GraphMeterMode_dots = GraphMeterMode_dotsUtf8;
@@ -363,11 +364,11 @@ static void GraphMeterMode_draw(Meter* this, int x, int y, int w) {
       value /= this->total;
       data->values[nValues - 1] = value;
    }
-   
    for (int i = nValues - (w*2) + 2, k = 0; i < nValues; i+=2, k++) {
       const double dot = (1.0 / 16);
       int v1 = data->values[i] / dot;
       int v2 = data->values[i+1] / dot;
+   printf("%d ",v1);
       
       if (v1 == 0) v1 = 1;
       if (v2 == 0) v2 = 1;
@@ -378,9 +379,17 @@ static void GraphMeterMode_draw(Meter* this, int x, int y, int w) {
          
          int line1 = MIN(4, MAX(0, v1 - level));
          int line2 = MIN(4, MAX(0, v2 - level));
+
+//line1 = 0;
+//line2 = 0;
  
          attrset(CRT_colors[colorIdx]);
-         mvaddstr(y+line, x+k, GraphMeterMode_dots[line1][line2]);
+         char* tmp[2]; tmp[0]='0'+k%10;tmp[1]=0;
+if(line==1 || k%3==0)
+         mvaddstr(y+line, x+k, GraphMeterMode_dots[4][4]);
+//         mvaddstr(y+line, x+k, GraphMeterMode_dots[line1][line2]);
+else
+         mvaddstr(y+line, x+k, tmp);
          colorIdx++;
          level -= 4;
       }
